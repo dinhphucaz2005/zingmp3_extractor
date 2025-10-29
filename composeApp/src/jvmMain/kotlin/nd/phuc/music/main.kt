@@ -2,6 +2,8 @@ package nd.phuc.music
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import nd.phuc.music.core.JvmApp
+
 
 fun main() = application {
     Window(
@@ -10,4 +12,7 @@ fun main() = application {
     ) {
         App()
     }
+    Runtime.getRuntime().addShutdownHook(Thread {
+        JvmApp.getOnAppDestroyListener().forEach { it.invoke() }
+    })
 }
