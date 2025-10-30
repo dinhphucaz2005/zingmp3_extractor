@@ -50,7 +50,7 @@ import nd.phuc.music.platform.getLocalSongs
 @Composable
 fun MusicScreen(
     modifier: Modifier = Modifier,
-    songs: List<Song> = getLocalSongs()
+    songs: List<Song> = getLocalSongs(),
 ) {
     var currentPlaySongId by remember { mutableStateOf<String?>(null) }
     var isPlaying by remember { mutableStateOf(false) }
@@ -164,7 +164,7 @@ fun MusicScreen(
 @Composable
 private fun SongThumbnail(
     song: Song,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FileImage(
         modifier = modifier,
@@ -180,7 +180,7 @@ private fun DesktopSongItem(
     isCurrentSong: Boolean,
     isPlaying: Boolean,
     onPlayClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
@@ -248,7 +248,7 @@ private fun NowPlayingSection(
     onPrevious: () -> Unit,
     onPlayPause: () -> Unit,
     onNext: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
