@@ -1,7 +1,8 @@
 import CryptoJS from "crypto-js";
 
-const ctime = "1761737931";
-const id = "Z7BWWABU";
+//const ctime = Math.floor(Date.now() / 1000);
+const ctime = "1761978643"
+const id = "ZWADD0BF";
 const version = "1.17.2";
 
 const e = "ctime=" + ctime + "id=" + id + "version=" + version;

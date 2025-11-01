@@ -1,8 +1,7 @@
-package nd.phuc.music
+package nd.phuc.music.presentation.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,15 +35,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlurEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import nd.phuc.music.common.data.Song
-import nd.phuc.music.common.ui.component.FileImage
+import nd.phuc.music.domain.model.Song
 import nd.phuc.music.platform.MusicPlayer
 import nd.phuc.music.platform.getLocalSongs
+import nd.phuc.music.presentation.ui.component.FileImage
 
 
 @Composable

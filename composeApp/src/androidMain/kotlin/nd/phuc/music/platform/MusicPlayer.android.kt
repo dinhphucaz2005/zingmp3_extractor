@@ -1,6 +1,6 @@
 package nd.phuc.music.platform
 
-import nd.phuc.music.common.data.Song
+import nd.phuc.music.domain.model.Song
 
 actual fun playSong(song: Song) {
     throw NotImplementedError("playSong is not implemented for Android yet.")

@@ -2,7 +2,7 @@ package nd.phuc.music.platform
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nd.phuc.music.common.data.Song
+import nd.phuc.music.domain.model.Song
 import java.io.File
 
 private fun getUserDirectory(): String {

@@ -1,4 +1,4 @@
-package nd.phuc.music.common.data
+package nd.phuc.music.domain.model
 
 import nd.phuc.music.platform.getThumbnailForSong
 import java.io.File

@@ -1,6 +1,6 @@
 package nd.phuc.music.platform
 
-import nd.phuc.music.common.data.Song
+import nd.phuc.music.domain.model.Song
 
 expect fun initializeMusicPlayer()
 expect fun playSong(song: Song)

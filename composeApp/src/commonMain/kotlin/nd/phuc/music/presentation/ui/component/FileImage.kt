@@ -1,4 +1,4 @@
-package nd.phuc.music.common.ui.component
+package nd.phuc.music.presentation.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
