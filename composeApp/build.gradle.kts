@@ -26,6 +26,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
+            implementation(projects.youtube)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -53,7 +54,7 @@ kotlin {
 }
 
 android {
-    namespace = "nd.phuc.music"
+    namespace = "com.phuc.music"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
