@@ -11,10 +11,14 @@ private fun getUserDirectory(): String {
 
 actual fun getLocalSongs(): List<Song> {
     val directory = getUserDirectory() + "/Music"
-    val musicFiles = File(directory).listFiles { file ->
-        val name = file.name.lowercase()
-        file.isFile && (name.endsWith(".mp3") || name.endsWith(".wav") || name.endsWith(".flac"))
-    } ?: return emptyList()
+    val musicFiles = File(directory)
+        .walk()
+        .filter {
+            it.isFile && listOf(".mp3", ".wav", ".flac").any { ext ->
+                it.name.lowercase().endsWith(ext)
+            }
+        }
+        .toList()
     return musicFiles.map { file ->
         Song(
             id = file.absolutePath.hashCode().toString(),
