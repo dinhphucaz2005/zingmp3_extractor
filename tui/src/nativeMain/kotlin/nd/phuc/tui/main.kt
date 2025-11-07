@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package nd.phuc.tui
 
 import kotlinx.cinterop.*
@@ -386,8 +388,18 @@ fun wcwidth(c: Char): Int {
     }
 }
 
-fun main() {
-    val musicPath = "/home/phuc/Music/Nightcore"
+fun main(args: Array<String>) {
+    if (args.contains("--help") || args.contains("-h")) {
+        println("Usage: music-player [MUSIC_DIRECTORY]")
+        println("If MUSIC_DIRECTORY is not provided, it will use the MUSIC environment variable or ~/Music by default.")
+        return
+    }
+    val musicPath = when {
+        args.isNotEmpty() -> args[0]
+        getenv("MUSIC") != null -> getenv("MUSIC")!!.toKString()
+        else -> (getenv("HOME")?.toKString() ?: ".") + "/Music"
+    }
+
     val mp3Files = listMp3Files(musicPath)
 
     if (mp3Files.isEmpty()) {
@@ -449,7 +461,7 @@ fun main() {
                         displayFiles.forEachIndexed { index, value ->
                             text(content = {
                                 val prefix = when {
-                                    playingIndex.value == index -> "${AnsiColors.GREEN}▶ "
+                                    playingIndex.value == index -> "${AnsiColors.GREEN}🎵 "
                                     selectedIndex.value == index -> "${AnsiColors.YELLOW}❯ "
                                     else -> "  "
                                 }
