@@ -35,3 +35,4 @@ plugins {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":composeApp")
 include(":youtube")
+include(":mpvClient")
