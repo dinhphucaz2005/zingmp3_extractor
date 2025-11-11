@@ -1,20 +1,5 @@
 package nd.phuc.youtube
 
-import nd.phuc.youtube.models.Context
-import nd.phuc.youtube.models.YouTubeClient
-import nd.phuc.youtube.models.YouTubeLocale
-import nd.phuc.youtube.models.body.AccountMenuBody
-import nd.phuc.youtube.models.body.BrowseBody
-import nd.phuc.youtube.models.body.GetQueueBody
-import nd.phuc.youtube.models.body.GetSearchSuggestionsBody
-import nd.phuc.youtube.models.body.GetTranscriptBody
-import nd.phuc.youtube.models.body.NextBody
-import nd.phuc.youtube.models.body.PlayerBody
-import nd.phuc.youtube.models.body.SearchBody
-import nd.phuc.youtube.utils.parseCookieString
-import nd.phuc.youtube.utils.sha1
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.HttpRequestBuilder
@@ -28,16 +13,43 @@ import io.ktor.http.contentType
 import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.encodeBase64
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import java.util.Locale
+import nd.phuc.youtube.models.Context
+import nd.phuc.youtube.models.YouTubeClient
+import nd.phuc.youtube.models.YouTubeLocale
+import nd.phuc.youtube.models.body.AccountMenuBody
+import nd.phuc.youtube.models.body.BrowseBody
+import nd.phuc.youtube.models.body.GetQueueBody
+import nd.phuc.youtube.models.body.GetSearchSuggestionsBody
+import nd.phuc.youtube.models.body.GetTranscriptBody
+import nd.phuc.youtube.models.body.NextBody
+import nd.phuc.youtube.models.body.PlayerBody
+import nd.phuc.youtube.models.body.SearchBody
+import nd.phuc.youtube.platform.createClient
+import nd.phuc.youtube.platform.currentTimeMillis
+import nd.phuc.youtube.utils.parseCookieString
+import nd.phuc.youtube.utils.sha1
 
 class YouTubeMusicApi {
-    private var httpClient = createClient()
+    private var httpClient = createClient() {
+        expectSuccess = true
+
+        install(ContentNegotiation) {
+            json(Json {
+                ignoreUnknownKeys = true
+                explicitNulls = false
+                encodeDefaults = true
+            })
+        }
+
+        defaultRequest {
+            url("https://music.youtube.com/youtubei/v1/")
+        }
+    }
 
     var locale = YouTubeLocale(
-        gl = Locale.getDefault().country,
-        hl = Locale.getDefault().toLanguageTag()
+        gl = "VN",
+        hl = "vi-VN"
     )
     var visitorData: String = "CgtsZG1ySnZiQWtSbyiMjuGSBg%3D%3D"
     var cookie: String? = null
@@ -49,31 +61,6 @@ class YouTubeMusicApi {
 
 
     var useLoginForBrowse: Boolean = false
-
-    @OptIn(ExperimentalSerializationApi::class)
-    private fun createClient() = HttpClient(CIO) {
-        expectSuccess = true
-
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                explicitNulls = false
-                encodeDefaults = true
-            })
-        }
-
-        /*
-                install(ContentEncoding) {
-                    brotli(1.0F)
-                    gzip(0.9F)
-                    deflate(0.8F)
-                }
-        */
-
-        defaultRequest {
-            url("https://music.youtube.com/youtubei/v1/")
-        }
-    }
 
     private fun HttpRequestBuilder.ytClient(client: YouTubeClient, setLogin: Boolean = false) {
         contentType(ContentType.Application.Json)
@@ -89,7 +76,7 @@ class YouTubeMusicApi {
                 cookie?.let { cookie ->
                     append("cookie", cookie)
                     if ("SAPISID" !in cookieMap) return@let
-                    val currentTime = System.currentTimeMillis() / 1000
+                    val currentTime = currentTimeMillis() / 1000
                     val sapisidHash =
                         sha1("$currentTime ${cookieMap["SAPISID"]} https://music.youtube.com")
                     append("Authorization", "SAPISIDHASH ${currentTime}_${sapisidHash}")

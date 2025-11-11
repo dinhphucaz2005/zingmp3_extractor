@@ -1,9 +1,8 @@
 package nd.phuc.youtube.utils
 
+import korlibs.crypto.sha1
 import nd.phuc.youtube.YouTube
 import nd.phuc.youtube.pages.PlaylistPage
-import io.ktor.utils.io.core.toByteArray
-import java.security.MessageDigest
 
 suspend fun Result<PlaylistPage>.completed() = runCatching {
     val page = getOrThrow()
@@ -30,7 +29,7 @@ private fun Byte.toHex(): String {
     return "${hexChars[b shr 4]}${hexChars[b and 0x0F]}"
 }
 
-fun sha1(str: String): String = MessageDigest.getInstance("SHA-1").digest(str.toByteArray()).toHex()
+fun sha1(str: String): String = str.encodeToByteArray().sha1().hex
 
 fun parseCookieString(cookie: String): Map<String, String> =
     cookie.split("; ")
