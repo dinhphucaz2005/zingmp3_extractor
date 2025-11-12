@@ -12,7 +12,7 @@ import okio.FileSystem
 import okio.Path.Companion.toPath
 import okio.SYSTEM
 
-suspend fun query(
+suspend fun search(
     query: String,
     visitorData: String? = null,
     cookie: String? = null,
@@ -47,7 +47,7 @@ suspend fun query(
         if (cover.isNullOrEmpty()) continue
 
         val outPath = outputDir / "${item.id}.jpg"
-        val jsonPath = jsonDir / "${item.title}.json"
+        val jsonPath = jsonDir / "${item.title.sanitizeFileName()}.json"
 
         if (!FileSystem.SYSTEM.exists(outPath)) {
             try {
@@ -73,10 +73,15 @@ suspend fun query(
     client.close()
 }
 
+private fun String?.sanitizeFileName(): String? {
+    if (this == null) return null
+    return replace(Regex("[\\\\/:*?\"<>|]"), "_")
+}
+
 fun main(args: Array<String>) = runBlocking {
-    if (args.size < 2 || args[0] != "--query") {
-        println("Usage: <program> --query <query>")
+    if (args.size < 2 || args[0] != "--search") {
+        println("Usage: <program> --search <query>")
         return@runBlocking
     }
-    query(args[1])
+    search(args[1])
 }
