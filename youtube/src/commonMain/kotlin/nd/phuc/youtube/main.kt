@@ -34,7 +34,7 @@ suspend fun search(
     }
 
     val home = getHomeDirectory()
-    val outputDir = "$home/Music/MusicNDP".toPath()
+    val outputDir = "$home/Music/BeatShell".toPath()
     val jsonDir = outputDir / "metadata"
 
     FileSystem.SYSTEM.createDirectories(outputDir)
