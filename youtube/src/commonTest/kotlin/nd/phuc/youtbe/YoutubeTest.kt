@@ -13,4 +13,10 @@ class YoutubeTest {
         )
         println(result)
     }
+
+    @Test
+    fun home() = runTest {
+        val home = YouTube.home()
+        println(home)
+    }
 }
