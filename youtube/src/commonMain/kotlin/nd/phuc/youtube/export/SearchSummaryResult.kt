@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class SearchSummaryResult(
     val id: String?,
     val title: String?,
-    var cover: String?,
+    var thumbnail: String?,
 )

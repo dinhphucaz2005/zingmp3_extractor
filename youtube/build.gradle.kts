@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
@@ -27,6 +31,17 @@ kotlin {
     }
 
     mingwX64 {
+        binaries {
+            executable {
+                entryPoint = "nd.phuc.youtube.main"
+            }
+            sharedLib {
+                baseName = "youtube"
+            }
+        }
+    }
+
+    macosArm64 {
         binaries {
             executable {
                 entryPoint = "nd.phuc.youtube.main"
@@ -73,6 +88,11 @@ kotlin {
         mingwX64Main {
             dependencies {
                 implementation(libs.ktor.client.windows)
+            }
+        }
+        macosArm64Main {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
             }
         }
     }

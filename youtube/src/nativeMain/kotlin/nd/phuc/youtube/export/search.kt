@@ -1,24 +1,15 @@
-package nd.phuc.youtube
+package nd.phuc.youtube.export
 
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import nd.phuc.youtube.export.SearchSummaryResult
+import nd.phuc.youtube.YouTube
 import nd.phuc.youtube.platform.createClient
 import nd.phuc.youtube.platform.getHomeDirectory
 import okio.FileSystem
 import okio.Path.Companion.toPath
-import okio.SYSTEM
 
 suspend fun search(
     query: String,
-    visitorData: String? = null,
-    cookie: String? = null,
 ) {
-    visitorData?.let { YouTube.visitorData = it }
-    cookie?.let { YouTube.cookie = it }
 
     val result = YouTube.search(
         query = query,
@@ -48,19 +39,7 @@ suspend fun search(
 
         val outPath = outputDir / "${item.id}.jpg"
         val jsonPath = jsonDir / "${item.title.sanitizeFileName()}.json"
-
-        if (!FileSystem.SYSTEM.exists(outPath)) {
-            try {
-                val response: HttpResponse = client.get(cover)
-                val bytes = response.body<ByteArray>()
-                FileSystem.SYSTEM.write(outPath) {
-                    write(bytes)
-                }
-            } catch (_: Exception) {
-                continue
-            }
-        }
-
+        createCover(url = cover, outputPath = outPath.toString())
         item.cover = outPath.toString()
 
         val jsonStr = Json.encodeToString(item)
@@ -76,12 +55,4 @@ suspend fun search(
 private fun String?.sanitizeFileName(): String? {
     if (this == null) return null
     return replace(Regex("[\\\\/:*?\"<>|]"), "_")
-}
-
-fun main(args: Array<String>) = runBlocking {
-    if (args.size < 2 || args[0] != "--search") {
-        println("Usage: <program> --search <query>")
-        return@runBlocking
-    }
-    search(args[1])
 }
