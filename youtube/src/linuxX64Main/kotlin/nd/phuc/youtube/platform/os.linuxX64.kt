@@ -9,3 +9,9 @@ actual fun getHomeDirectory(): String {
     val home = getenv("HOME")?.toKString()
     return home ?: ""
 }
+
+actual fun mkdir(path: String): Boolean {
+    val command = "mkdir -p \"$path\""
+    val result = platform.posix.system(command)
+    return result == 0
+}

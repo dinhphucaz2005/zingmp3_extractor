@@ -7,7 +7,14 @@ suspend fun playlist(
 ) {
     val result = YouTube.playlist(
         playlistId = playlistId,
-    ).getOrNull() ?: return
-
-    println("Playlist: $result")
+    ).getOrNull() ?: throw Exception("Failed to get playlist info")
+    result.songs.forEach {
+        println(
+            createMetadata(
+                ytItem = it,
+                type = null,
+                prefix = "playlist/${playlistId.sanitizeFileName()}",
+            )
+        )
+    }
 }

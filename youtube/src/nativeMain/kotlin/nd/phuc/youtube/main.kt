@@ -15,30 +15,30 @@ Usage: <program> --search <query>
     --help                    Show this help message
 """
 
-fun Array<String>.getArgValue(flag: String): String? {
+fun List<String>.getArgValue(flag: String): String? {
     val index = indexOf(flag)
     return if (index != -1 && index + 1 < size) this[index + 1] else null
 }
 
 fun main(args: Array<String>) = runBlocking {
-    if (args.contains("--help") || args.isEmpty()) {
+    val arguments = args.toMutableList()
+    addArgument(arguments)
+    if (arguments.contains("--help") || arguments.isEmpty()) {
         println(HELP)
         return@runBlocking
     }
 
 
-    args.getArgValue("--cookie")?.let { Config.cookie = it }
-    args.getArgValue("--visitorId")?.let { Config.visitorId = it }
+    arguments.getArgValue("--cookie")?.let { Config.cookie = it }
+    arguments.getArgValue("--visitorId")?.let { Config.visitorId = it }
 
-    when {
-        args.contains("--search") -> args.getArgValue("--search")?.let {
-            search(it)
-        }
+    arguments.getArgValue("--search")?.let { search(it) }
 
-        args.contains("--playlist") -> args.getArgValue("--playlist")?.let {
-            playlist(it)
-        }
+    arguments.getArgValue("--playlist")?.let { playlist(it) }
 
-        args.contains("--home") -> home()
+    if (arguments.contains("--home")) {
+        home()
     }
+
+    Config.httpClient.close();
 }
