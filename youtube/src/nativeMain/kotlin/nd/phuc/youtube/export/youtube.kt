@@ -7,7 +7,6 @@ import kotlin.native.CName
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import nd.phuc.youtube.YouTube
-import nd.phuc.youtube.export.SearchSummaryResult
 import kotlin.experimental.ExperimentalNativeApi
 
 
@@ -37,7 +36,7 @@ fun searchSummary(
             SearchSummaryResult(
                 id = it.id,
                 title = it.title,
-                cover = it.thumbnail,
+                thumbnail = it.thumbnail,
             )
         }
         Json.encodeToString(data)

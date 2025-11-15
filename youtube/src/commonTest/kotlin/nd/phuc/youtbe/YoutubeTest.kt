@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class YoutubeTest {
     @Test
-    fun testSearch() = runTest {
+    fun search() = runTest {
         val result = YouTube.search(
             query = "Sự thật sau một lời hứa remix",
             filter = YouTube.SearchFilter.FILTER_VIDEO,
