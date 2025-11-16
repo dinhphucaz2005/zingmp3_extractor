@@ -28,7 +28,7 @@ suspend fun search(
         SearchSummaryResult(
             id = it.id,
             title = it.title,
-            cover = it.thumbnail,
+            thumbnail = it.thumbnail,
         )
     }
 
@@ -42,7 +42,7 @@ suspend fun search(
     val client = createClient {}
 
     for (item in items) {
-        val cover = item.cover
+        val cover = item.thumbnail
         if (cover.isNullOrEmpty()) continue
 
         val outPath = outputDir / "${item.id}.jpg"
@@ -60,7 +60,7 @@ suspend fun search(
             }
         }
 
-        item.cover = outPath.toString()
+        item.thumbnail = outPath.toString()
 
         val jsonStr = Json.encodeToString(item)
         FileSystem.SYSTEM.write(jsonPath) {

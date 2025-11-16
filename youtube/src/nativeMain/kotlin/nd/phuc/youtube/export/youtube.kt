@@ -37,7 +37,7 @@ fun searchSummary(
             SearchSummaryResult(
                 id = it.id,
                 title = it.title,
-                cover = it.thumbnail,
+                thumbnail = it.thumbnail,
             )
         }
         Json.encodeToString(data)
